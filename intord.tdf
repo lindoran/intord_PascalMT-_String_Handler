@@ -1,0 +1,18 @@
+{ custom type defs for intord.inc, and its table modules LICENSE }
+
+strptrtp = array[1..7] of byte;
+strptr   = ^strptrtp;
+otstrtp  = string[6]; (* 5 chr string type that will work for passing #'s *)
+
+      (* look up pointers def *)
+ordptr      = array[0..9] of byte;
+intptr      = array[48..70] of byte;
+decptr      = array[2..5,2..5] of integer;
+hexptr      = array[2..4,2..4] of integer;
+       
+         (* table pointers *)
+ordptrtp    = ^ordptr;
+intptrtp    = ^intptr;
+decptrtp    = ^decptr;
+hexptrtp    = ^hexptr;
+

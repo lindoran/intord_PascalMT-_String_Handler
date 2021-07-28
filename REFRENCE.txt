@@ -1,0 +1,196 @@
+﻿
+
+INTORD
+
+A modern(ish) integer strings handler for Pascal/MT+
+Programmer's Reference Sheet
+
+© 2021 - D. Collins 
+z80dad@gmail.com
+
+
+
+1 - INTRODUCTION: 
+
+This module when included into your source will provide a few pointer driven 
+string manipulation routines which allow for (relatively) fast conversion of 
+strings to and from integers.  This functionality was left out of the compiler 
+and is very handy, especially when creating programs to control a VT100 / ANSI 
+terminal.
+
+
+The module consists of two parts: 
+
+
+1 - The main module (intord.inc) which contains the 100% portable  code and the
+strings handler.
+
+
+2 - the table modules (itbl8080.inc & itbl8086.inc) which contain the 
+conversion tables needed for the handler to operate at speed. You will need to
+include one of these depending on the platform. The 8080 module uses only 8080
+instructions so it should work on both the intel 8080 as well as the Z80.  The 
+8086 variant is 16 bit 8086 and should work on any 8086 platform that also runs
+the compiler. 
+
+
+USE:
+        
+To use, simply include the .def and .tdf files in your declaration block by 
+using the {$I } compiler directive, directly in source and calling ‘IMKPTRS’ 
+Someplace in execution before using any of the included functions; this is a 
+special procedure that declares the locations of all the custom tables for the
+functions. In a later version I plan to use machine code to define these 
+tables, but it makes no difference at this point in terms of speed as these are
+simply look up tables and the pointers can be declared 1x during program bootup 
+and then simply used from that point. 
+
+
+Example 1-1 (including modules):
+           
+PROGRAM Test_Prog;
+TYPE
+        {$I intord.tdf}
+        <your custom types go here>
+
+
+VAR
+        <your custom variables go here>
+        
+(* end of your  declaration block *)
+        
+{$I intord.def}
+
+
+You will then need either use the precompiled .erl / .86r files at link time or
+compile your own.  This may be necessary as your CP/M environment / dos 
+environment may be different from the V20-MBC used to compile these but they 
+are included in the repository for ease of use.  Remember also that you will 
+need to link BOTH intord, as well as a compatible table module (itbl8080 or 
+itbl8086).
+
+
+SIGNED DATA:
+
+For speed these functions only work with positive values and will not work 
+(or will produce unpredictable values with signed data). Please remember this
+when working with these functions.  It’s possible to make these work at speed 
+with signed numbers, just not using pure pascal code. A later revision may 
+include support for floating point and negative numbers.
+
+
+2 - FUNCTION / PROCEDURE USE: 
+
+
+Intlen - 
+
+
+Function intlen(integer) 
+	pass a 16 bit integer and intlen returns the number of digits. Similar to 
+	length() for strings. 
+
+
+EXAMPLE 2-1:
+
+
+        A := 100;
+
+
+        writeln(Intlen (a));
+
+
+        <Should return 3>
+
+
+
+
+Intstr -
+
+
+Procedure intstr(integer,pointer)
+	Pass an integer value and a pointer to a string, the procedure will place the 
+	ASCII characters of that integer value into that string.
+
+
+EXAMPLE 2-2:
+
+
+        A := 100;
+
+
+        StA := ‘’;
+
+
+        intstr(a,addr(StA));  (* addr() is in paslib see compiler docs *)
+        writeln(StA);
+
+
+        <should return 100>
+
+
+
+
+Strint & hstrint - 
+
+
+Function strint (string)  (* a string which is 5 characters or less *)
+Function hstrint (string) (*  “  ”             4     “  “           *)
+	Pass a string with ASCII Coded Decimal / Hexadecimal (HSTRINT), the function 
+	will return the value as an integer. NOTE: HSTRINT uses a 4 characters 
+	hexadecimal, ASCII coded and expects the numeral order as a standard 16 byte 
+	BIG ENDIAN integer. If reading in 16 bit bytes in LITTLE ENDIAN notation, you 
+	may need to swap the bytes before transcoding. EXAMPLE: for the value (462) 
+	HSTRINT expects (1CE).  Additionally, the character ‘h’ following a number in
+	hex or ‘0x’ preceding it will also produce issues.
+
+
+EXAMPLE 2-3: 
+
+
+	StA := ‘462’
+	StB := ‘052C’ (* value is 1324 *)
+	writeln((strint(StA)+1));
+	writeln((hstrint(StB)+4)); 
+
+
+	< should return 463 and 1328 >
+
+
+
+Imkptrs - 
+
+
+Procedure imkptrs 
+	Generates the pointers for the table data for the module required to be placed
+	in your main code before calling any of the module procedures.  The code for 
+	this is actually located in the platform specific table module and is 
+	different in size and execution time between the platforms.
+
+EXAMPLE 2-4:
+
+	imkptrs;
+	<hereafter, you can use any function from this module>
+
+3 - LICENCE: 
+
+MIT License
+
+Copyright (c) 2021 Dave Collins
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

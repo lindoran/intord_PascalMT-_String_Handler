@@ -1,0 +1,8 @@
+{ external defs for intiger tables module for intord see LICENCE }
+
+intord     : external ordptrtp;
+devisor    : external decptrtp;
+chrint     : external intptrtp;
+mplyerdec  : external decptrtp;
+mplyerhex  : external hexptrtp;
+
