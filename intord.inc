@@ -47,13 +47,12 @@ var
 { devide & conqur method, very fast no math counts digits }
 function intlen(value :integer) : byte;
 begin
- if abs(value) < 10000 then 
-  if abs(value) < 100 then 
-    if abs(value) < 10 then intlen := 1 else intlen := 2
+ if value < 10000 then 
+  if value < 100 then 
+    if value < 10 then intlen := 1 else intlen := 2
   else
-    if abs(value) < 1000 then intlen := 3 else intlen := 4
+    if value < 1000 then intlen := 3 else intlen := 4
  else intlen := 5;
- if value = 0 then intlen := 1;
 end;
 
 { procedure directly modifies a string with integer values using a 
