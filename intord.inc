@@ -12,29 +12,8 @@ MODULE io_main;
  table modules that build the data in memory and estabish the pointers
  without calling them it might be a good project if you are incredibly bored.
  
- MIT License
-
-Copyright (c) 2021 Dave Collins
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- 
- }
+ (C)2021 D. Collins - USE AT YOUR OWN RISK - Licence to use without
+ warentee from damage guarantee of functionality free to distribute }
 
 type 
 {$I intord.tdf}
@@ -67,6 +46,7 @@ var
  
 begin
  len  := intlen(value); (* much faster to do this just once *)
+ loc^[1] := len;
  loc^[len+1] := intord^[value mod 10];
  if len > 1 then for a := len downto 2 do 
    loc^[a] := intord^[(value div devisor^[len][a]) mod 10];
@@ -113,4 +93,4 @@ end;
 
 MODEND.
 
-
+

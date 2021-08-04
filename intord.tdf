@@ -1,4 +1,4 @@
-{ custom type defs for intord.inc, and its table modules LICENSE }
+{ custom type defs for intord.inc, and its table modules }
 
 strptrtp = array[1..7] of byte;
 strptr   = ^strptrtp;
@@ -16,3 +16,4 @@ intptrtp    = ^intptr;
 decptrtp    = ^decptr;
 hexptrtp    = ^hexptr;
 
+

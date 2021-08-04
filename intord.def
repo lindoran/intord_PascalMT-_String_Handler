@@ -1,8 +1,8 @@
-{these are the external procedure and function defs for intord.inc see LICENCE }
+{these are the external procedure and function defs for intord.inc }
 
 external function intlen(value :integer) :byte;
 external procedure intstr(value:integer;loc :strptr);
 external function strint(value :otstrtp)  :integer;
 external function hstrint(value :otstrtp) :integer;
-external procedure imkptrs; (* this is actually in the tables module *)
-
+external procedure imkptrs;
+
